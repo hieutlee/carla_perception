@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+dataset/
+*.mp4
+.DS_Store
+*.txt
+checkpoints/
+checkpoints_rtdetr/
+*.pth
+*.npy
+

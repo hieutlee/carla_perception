@@ -1,0 +1,120 @@
+# =============================================================================
+# CARLA 0.9.16 Perception Stack — Data Collection Configuration
+# =============================================================================
+
+carla:
+  host: "localhost"
+  port: 2000
+  timeout: 30.0
+  fixed_delta_seconds: 0.1
+  warmup_ticks: 100
+
+ego_vehicle:
+  blueprint: "vehicle.mercedes.coupe"
+  spawn_point: null
+  autopilot: true
+  traffic_manager_port: 8000
+  target_speed_pct: 70
+
+sensors:
+  rgb:
+    blueprint: "sensor.camera.rgb"
+    image_size_x: 800
+    image_size_y: 450
+    fov: 90.0
+    transform:
+      location: { x: 1.5, y: 0.0, z: 2.4 }
+      rotation: { pitch: -5.0, yaw: 0.0, roll: 0.0 }
+
+  depth:
+    blueprint: "sensor.camera.depth"
+    image_size_x: 800
+    image_size_y: 450
+    fov: 90.0
+    transform:
+      location: { x: 1.5, y: 0.0, z: 2.4 }
+      rotation: { pitch: -5.0, yaw: 0.0, roll: 0.0 }
+
+  instance_segmentation:
+    blueprint: "sensor.camera.instance_segmentation"
+    image_size_x: 800
+    image_size_y: 450
+    fov: 90.0
+    transform:
+      location: { x: 1.5, y: 0.0, z: 2.4 }
+      rotation: { pitch: -5.0, yaw: 0.0, roll: 0.0 }
+
+  semantic_segmentation:
+    blueprint: "sensor.camera.semantic_segmentation"
+    image_size_x: 800
+    image_size_y: 450
+    fov: 90.0
+    transform:
+      location: { x: 1.5, y: 0.0, z: 2.4 }
+      rotation: { pitch: -5.0, yaw: 0.0, roll: 0.0 }
+
+traffic:
+  # Higher count = more cars visible per frame = better training data
+  num_vehicles: 50
+  num_walkers: 15
+  ignore_lights_pct: 5
+  ignore_signs_pct: 5
+
+collection:
+  frames_per_run: 5000
+  save_interval: 1
+  output_dir: "./dataset"
+  # Only save frames that have at least this many visible actors
+  # Set to 0 to save everything (including empty frames)
+  min_actors_to_save: 0
+  maps:
+    - "Town10HD_Opt"
+  image_format: "png"
+
+# Follow the ego vehicle with the spectator camera (visible in CARLA window)
+# Disable for headless / production runs
+spectator:
+  enabled: true
+  # Camera offset behind and above the ego vehicle
+  distance_behind: 8.0
+  height_above: 4.0
+
+weather_schedule:
+  presets:
+    - name: "ClearNoon"
+      weight: 0.10
+    - name: "CloudyNoon"
+      weight: 0.09
+    - name: "WetNoon"
+      weight: 0.09
+    - name: "WetCloudyNoon"
+      weight: 0.09
+    - name: "SoftRainNoon"
+      weight: 0.09
+    - name: "HardRainNoon"
+      weight: 0.09
+    - name: "ClearSunset"
+      weight: 0.09
+    - name: "CloudySunset"
+      weight: 0.09
+    - name: "WetSunset"
+      weight: 0.09
+    - name: "ClearNight"
+      weight: 0.09
+    - name: "CloudyNight"
+      weight: 0.09
+
+label_mapping:
+  10: { id: 0, name: "vehicle" }
+  12: { id: 1, name: "pedestrian" }
+  13: { id: 2, name: "rider" }
+  14: { id: 3, name: "bicycle" }
+  15: { id: 4, name: "motorcycle" }
+  16: { id: 5, name: "bus" }
+  18: { id: 6, name: "truck" }
+
+bbox_filter:
+  min_area: 100
+  min_visibility: 0.15
+  max_distance: 100.0
+  min_dimension: 10
